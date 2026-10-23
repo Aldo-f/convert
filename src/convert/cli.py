@@ -6,6 +6,40 @@ from convert.models import ConversionRequest, ConversionResult
 # Import converters to register them
 import convert.converters  # noqa: F401
 
+def _check_specs():
+    """Check that all registered converters have spec.md files with required sections."""
+    required_sections = ["## Input", "## Output", "## Dependencies"]
+    missing = []
+    
+    for src, dst in registry.list_pairs():
+        # Find the converter module
+        converter_name = f"{src}_to_{dst}"
+        try:
+            module = __import__(f"convert.converters.{converter_name}", fromlist=[""])
+            # spec.md is in a subdirectory named after the converter
+            spec_path = Path(module.__file__).parent / converter_name / "spec.md"
+            # Also check legacy location (same directory as module)
+            if not spec_path.exists():
+                spec_path = Path(module.__file__).parent / "spec.md"
+        except (ImportError, AttributeError):
+            missing.append(f"{src}→{dst}: no converter module found")
+            continue
+        
+        if not spec_path.exists():
+            missing.append(f"{src}→{dst}: spec.md not found at {spec_path}")
+            continue
+        
+        content = spec_path.read_text()
+        for section in required_sections:
+            if section not in content:
+                missing.append(f"{src}→{dst}: missing required section '{section}'")
+    
+    if missing:
+        for m in missing:
+            click.echo(f"Spec check failed: {m}", err=True)
+        return False
+    return True
+
 @click.group()
 @click.version_option("0.1.0", prog_name="convert")
 def cli():
@@ -33,6 +67,13 @@ def convert(source: Path, target: Path):
     
     result: ConversionResult = converter(request)
     click.echo(str(result.output_path))
+
+@cli.command()
+def check_specs():
+    """Verify all registered converters have valid spec.md files."""
+    if not _check_specs():
+        raise click.Abort()
+    click.echo("All specs valid")
 
 if __name__ == "__main__":
     cli()
