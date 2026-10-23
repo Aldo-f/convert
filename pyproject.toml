@@ -13,6 +13,9 @@ dependencies = [
 ]
 license = {text = "MIT"}
 
+[project.scripts]
+convert = "convert.cli:cli"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
@@ -28,7 +31,7 @@ include = ["convert*"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = "--cov=convert --cov-fail-under=70 --cov-append"
+addopts = "--cov=convert --cov-fail-under=85"
 
 [tool.ruff]
 line-length = 100
