@@ -40,9 +40,29 @@ def _check_specs():
         return False
     return True
 
-@click.group()
+def _check_specs_flag(ctx, param, value):
+    """Eager --check-specs flag: run spec check and exit."""
+    if not value or ctx.resilient_parsing:
+        return
+    if _check_specs():
+        click.echo("All specs valid")
+        ctx.exit(0)
+    click.echo("Spec check failed", err=True)
+    ctx.exit(1)
+
+
+@click.group(invoke_without_command=True)
 @click.version_option("0.1.0", prog_name="convert")
-def cli():
+@click.option(
+    "--check-specs",
+    is_flag=True,
+    expose_value=False,
+    is_eager=True,
+    callback=_check_specs_flag,
+    help="Check all converter specs and exit.",
+)
+@click.pass_context
+def cli(ctx):
     """convert: type-x to type-y converter."""
 
 @cli.command()
