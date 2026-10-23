@@ -1,6 +1,6 @@
-from pathlib import Path
 from convert.models import ConversionRequest, ConversionResult
 from convert.registry import register
+
 
 @register("txt", "md")
 def convert(req: ConversionRequest) -> ConversionResult:

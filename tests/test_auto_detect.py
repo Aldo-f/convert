@@ -1,6 +1,7 @@
-from pathlib import Path
 from click.testing import CliRunner
+
 from convert.cli import cli
+
 
 def test_auto_detect_md_to_docx(tmp_path):
     """Test auto-detection of md format from extension."""
@@ -11,6 +12,7 @@ def test_auto_detect_md_to_docx(tmp_path):
     assert r.exit_code == 0
     assert out.exists()
 
+
 def test_auto_detect_txt_to_md(tmp_path):
     """Test auto-detection of txt format from extension."""
     txt = tmp_path / "test.txt"
@@ -19,6 +21,7 @@ def test_auto_detect_txt_to_md(tmp_path):
     r = CliRunner().invoke(cli, ["convert", str(txt), str(out)])
     assert r.exit_code == 0
     assert out.read_text() == "hello world"
+
 
 def test_unknown_extension_fails(tmp_path):
     """Test that unknown extension fails with helpful error."""

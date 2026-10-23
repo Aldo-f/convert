@@ -10,16 +10,31 @@ pip install -e .
 
 Requires Python 3.12+.
 
+> **Note on the `convert` command name:** ImageMagick also provides `/usr/bin/convert`, which takes precedence on most `PATH`s. To use this project's CLI, run the full path or adjust `PATH`:
+> ```bash
+> /home/aldo/hermes/bin/convert ...
+> # or
+> PATH=/home/aldo/hermes/bin:$PATH convert ...
+> # or
+> python -m convert.cli ...
+> ```
+
 ## Usage
 
 ```bash
 # Convert Markdown to DOCX (auto-detects from extension)
 convert README.md README.docx
 
+# Convert Markdown to plaintext
+convert file.md file.txt
+
 # Convert plaintext to Markdown
 convert notes.txt notes.md
 
-# Check all converter specs
+# Check all converter specs (flag form, works with no subcommand)
+convert --check-specs
+
+# Check all converter specs (subcommand form)
 convert check-specs
 
 # Show help
@@ -32,6 +47,7 @@ convert convert --help
 | Source → Target | Command Example |
 |-----------------|-----------------|
 | Markdown → DOCX | `convert file.md file.docx` |
+| Markdown → Plaintext | `convert file.md file.txt` |
 | Plaintext → Markdown | `convert file.txt file.md` |
 
 ## Adding a New Converter
@@ -77,7 +93,7 @@ def convert(req: ConversionRequest) -> ConversionResult:
 ## Development
 
 ```bash
-# Run tests with coverage
+# Run tests with coverage (gate is 85%)
 pytest --cov=convert --cov-fail-under=85
 
 # Lint

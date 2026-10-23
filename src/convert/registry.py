@@ -1,4 +1,5 @@
-from typing import Callable
+from collections.abc import Callable
+
 
 class _Registry:
     def __init__(self):
@@ -8,6 +9,7 @@ class _Registry:
         def deco(fn: Callable):
             self._d[(src, dst)] = fn
             return fn
+
         return deco
 
     def list_pairs(self):
@@ -16,5 +18,9 @@ class _Registry:
     def get(self, src, dst):
         return self._d.get((src, dst))
 
+
 registry = _Registry()
-def register(src, dst): return registry.register(src, dst)
+
+
+def register(src, dst):
+    return registry.register(src, dst)

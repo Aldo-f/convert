@@ -1,5 +1,7 @@
 """Tests for CLI error paths and edge cases."""
+
 from click.testing import CliRunner
+
 from convert.cli import cli
 
 
@@ -17,6 +19,7 @@ def test_convert_no_converter(tmp_path):
 def test_check_specs_failure(tmp_path):
     """Test check_specs when a converter is missing its spec."""
     from convert.registry import registry
+
     # Register a fake converter with no spec
     @registry.register("fake", "fake")
     def fake(req):
@@ -42,9 +45,9 @@ def test_cli_main_block():
     """Test that __main__ entry point works."""
     import subprocess
     import sys
+
     result = subprocess.run(
-        [sys.executable, "-m", "convert.cli", "--version"],
-        capture_output=True, text=True
+        [sys.executable, "-m", "convert.cli", "--version"], capture_output=True, text=True
     )
     assert result.returncode == 0
     assert "convert" in result.stdout.lower()

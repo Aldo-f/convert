@@ -1,5 +1,5 @@
-from pathlib import Path
 from click.testing import CliRunner
+
 from convert.cli import cli
 
 

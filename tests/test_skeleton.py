@@ -1,6 +1,9 @@
 import sys
+
 from click.testing import CliRunner
+
 from convert.cli import cli
+
 
 def test_cli_runs():
     runner = CliRunner()
@@ -8,11 +11,13 @@ def test_cli_runs():
     assert result.exit_code == 0
     assert "convert" in result.output.lower()
 
+
 def test_cli_help():
     runner = CliRunner()
     result = runner.invoke(cli, ["--help"])
     assert result.exit_code == 0
     assert "type-x to type-y" in result.output.lower()
+
 
 def test_cli_main_block():
     # Directly call cli() to cover the main block
