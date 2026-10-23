@@ -106,7 +106,7 @@ ruff format src tests
 ## Architecture
 
 - **CLI**: `src/convert/cli.py` - Click-based command interface
-- **Registry**: `src/convert/registry.py` - Auto-discovers converters via `@register` decorator
+- **Registry**: `src/convert/registry.py` - Converters self-register via the `@register` decorator when imported
 - **Models**: `src/convert/models.py` - `ConversionRequest` and `ConversionResult` dataclasses
 - **Converters**: `src/convert/converters/` - One file per source→target pair
 

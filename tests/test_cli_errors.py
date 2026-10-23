@@ -41,6 +41,17 @@ def test_check_specs_flag_success():
     assert "All specs valid" in result.output
 
 
+def test_direct_group_invocation(tmp_path):
+    """Entry-point form ``convert <source> <target>`` (no convert subcommand)."""
+    src = tmp_path / "in.md"
+    src.write_text("# Direct\n")
+    dst = tmp_path / "out.docx"
+    runner = CliRunner()
+    result = runner.invoke(cli, [str(src), str(dst)])
+    assert result.exit_code == 0
+    assert dst.exists()
+
+
 def test_cli_main_block():
     """Test that __main__ entry point works."""
     import subprocess
