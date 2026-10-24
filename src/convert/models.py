@@ -8,6 +8,8 @@ class ConversionRequest:
     target_path: Path
     src_fmt: str
     dst_fmt: str
+    remove_background: bool = False
+    bg_color: str = "white"
 
 
 @dataclass

@@ -99,7 +99,24 @@ def cli(ctx):
 @cli.command()
 @click.argument("source", type=click.Path(exists=True, path_type=Path))
 @click.argument("target", type=click.Path(path_type=Path))
-def convert(source: Path, target: Path):
+@click.option(
+    "--remove-background",
+    is_flag=True,
+    default=False,
+    help="Make background color transparent (PNG/WEBP targets only).",
+)
+@click.option(
+    "--bg-color",
+    default="white",
+    show_default=True,
+    help="Color treated as background (name or hex, e.g. #FFFFFF).",
+)
+def convert(
+    source: Path,
+    target: Path,
+    remove_background: bool,
+    bg_color: str,
+):
     """Convert a file from one format to another."""
     src_fmt = source.suffix.lstrip(".")
     dst_fmt = target.suffix.lstrip(".")
@@ -110,7 +127,12 @@ def convert(source: Path, target: Path):
         raise click.Abort()
 
     request = ConversionRequest(
-        source_path=source, target_path=target, src_fmt=src_fmt, dst_fmt=dst_fmt
+        source_path=source,
+        target_path=target,
+        src_fmt=src_fmt,
+        dst_fmt=dst_fmt,
+        remove_background=remove_background,
+        bg_color=bg_color,
     )
 
     result: ConversionResult = converter(request)
