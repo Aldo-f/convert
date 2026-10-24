@@ -1,5 +1,6 @@
 # Import all converters to register them
 from . import (  # noqa: F401
+    audio_to_audio,
     docx_to_md,
     docx_to_txt,
     img_to_img,
@@ -7,4 +8,5 @@ from . import (  # noqa: F401
     md_to_txt,
     txt_to_docx,
     txt_to_md,
+    video_to_video,
 )

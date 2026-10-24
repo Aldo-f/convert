@@ -13,11 +13,21 @@ def _check_specs():
     required_sections = ["## Input", "## Output", "## Dependencies"]
     missing = []
     converters_dir = Path(__file__).resolve().parent / "converters"
-    shared_spec = converters_dir / "spec.md"
+    image_spec = converters_dir / "spec.md"
+    audio_spec = converters_dir / "audio_to_audio" / "spec.md"
+    video_spec = converters_dir / "video_to_video" / "spec.md"
     _IMAGE_FORMATS = {"png", "jpg", "jpeg", "webp", "gif"}
+    _AUDIO_FORMATS = {"mp3", "wav", "ogg", "flac", "aac", "m4a"}
+    _VIDEO_FORMATS = {"mp4", "webm", "mkv", "avi", "mov"}
 
-    def _is_image_pair(src, dst):
-        return src in _IMAGE_FORMATS and dst in _IMAGE_FORMATS
+    def shared_spec_for(src, dst):
+        if src in _IMAGE_FORMATS and dst in _IMAGE_FORMATS:
+            return image_spec
+        if src in _AUDIO_FORMATS and dst in _AUDIO_FORMATS:
+            return audio_spec
+        if src in _VIDEO_FORMATS and dst in _VIDEO_FORMATS:
+            return video_spec
+        return None
 
     for src, dst in registry.list_pairs():
         # Find the converter module
@@ -30,8 +40,8 @@ def _check_specs():
             if not spec_path.exists():
                 spec_path = Path(module.__file__).parent / "spec.md"
         except (ImportError, AttributeError):
-            # Shared module (img_to_img) serves image pairs; use the shared spec.
-            spec_path = shared_spec if _is_image_pair(src, dst) else None
+            # Shared module serves this pair; use the shared spec.
+            spec_path = shared_spec_for(src, dst)
 
         if spec_path is None or not spec_path.exists():
             missing.append(f"{src}→{dst}: spec.md not found at {spec_path}")

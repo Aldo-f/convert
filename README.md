@@ -49,6 +49,8 @@ convert convert --help
 | Markdown → DOCX | `convert file.md file.docx` |
 | Markdown → Plaintext | `convert file.md file.txt` |
 | Plaintext → Markdown | `convert file.txt file.md` |
+| Audio → Audio (mp3/wav/ogg/flac/aac/m4a, any pair) | `convert in.mp3 out.wav` |
+| Video → Video (mp4/webm/mkv/avi/mov, any pair) | `convert in.mp4 out.webm` |
 | Image → Image (png/jpg/jpeg/webp/gif, any pair) | `convert in.png out.jpg` |
 | PNG/WEBP → same format (background removal) | `convert in.png out.png --remove-background` |
 
@@ -103,6 +105,18 @@ ruff check src tests
 
 # Format
 ruff format src tests
+
+# Spec check (all converter specs valid)
+python -m convert.cli check-specs
+
+# Validation order (run all three): pytest -> ruff -> check-specs
+
+# PEP 668 note: system pip is externally managed. Install + test in an
+# isolated venv instead of pip-installing into system Python:
+#   python3 -m venv /tmp/opencode/convert-venv
+#   /tmp/opencode/convert-venv/bin/pip install -e /mnt/HDD1/dev/scripts/convert
+#   /tmp/opencode/convert-venv/bin/pip install pytest pytest-cov Pillow
+#   /tmp/opencode/convert-venv/bin/python -m pytest tests/   (run from convert/)
 ```
 
 ## Architecture
