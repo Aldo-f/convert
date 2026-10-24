@@ -29,7 +29,7 @@ where = ["src"]
 include = ["convert*"]
 
 [tool.setuptools.package-data]
-convert = ["converters/*/spec.md"]
+convert = ["converters/spec.md", "converters/*/spec.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

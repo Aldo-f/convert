@@ -49,13 +49,15 @@ convert convert --help
 | Markdown → DOCX | `convert file.md file.docx` |
 | Markdown → Plaintext | `convert file.md file.txt` |
 | Plaintext → Markdown | `convert file.txt file.md` |
+| Image → Image (png/jpg/jpeg/webp/gif, any pair) | `convert in.png out.jpg` |
+| PNG/WEBP → same format (background removal) | `convert in.png out.png --remove-background` |
 
 ## Adding a New Converter
 
 1. Create a new file in `src/convert/converters/` (e.g., `html_to_pdf.py`)
 2. Implement a `convert(req: ConversionRequest) -> ConversionResult` function
 3. Decorate it with `@register("html", "pdf")`
-4. Add a `spec.md` in a subdirectory (e.g., `src/convert/converters/html_to_pdf/spec.md`) with required sections:
+4. Add a `spec.md` in a subdirectory (e.g., `src/convert/converters/html_to_pdf/spec.md`) or, for formats served by a shared implementation, place `spec.md` directly in `src/convert/converters/` with required sections:
    - `## Input`
    - `## Output`
    - `## Dependencies`

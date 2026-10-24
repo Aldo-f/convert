@@ -1,12 +1,14 @@
-"""Shared image-to-image conversion implementation.
+"""Shared image-to-image conversion implementation for png/jpg/jpeg/webp/gif.
 
-Thin per-pair modules in this same package register each ordered
-(source, target) pair and delegate to :func:`convert_image`.
+Registers every ordered image pair (plus same-format png->png and webp->webp
+for background removal) on import. Thin per-pair modules were removed; the
+registration loop below replaces them.
 """
 
 from PIL import Image, ImageColor, UnidentifiedImageError
 
 from convert.models import ConversionRequest, ConversionResult
+from convert.registry import register
 
 _FORMATS = ("png", "jpg", "jpeg", "webp", "gif")
 _PIL_FORMAT = {
@@ -41,16 +43,7 @@ def _parse_bg_color(bg_color: str):
         return ImageColor.getrgb("white")[:3]
 
 
-def convert_image(req: ConversionRequest) -> ConversionResult:
-    """Convert an image from one format to another.
-
-    Background removal options are read from *req*:
-    - ``req.remove_background``: when ``True`` and the target supports
-      transparency (PNG, WEBP), pixels matching ``req.bg_color`` become
-      transparent.
-    - ``req.bg_color``: color treated as background (name or hex, default
-      ``"white"``). Only used when ``remove_background`` is ``True``.
-    """
+def convert_image(req: ConversionRequest):
     src_fmt = req.src_fmt.lower()
     dst_fmt = req.dst_fmt.lower()
     remove_background = req.remove_background
@@ -90,3 +83,13 @@ def convert_image(req: ConversionRequest) -> ConversionResult:
         raise ValueError(f"Not a valid image file: {req.source_path}") from exc
 
     return ConversionResult(req.target_path, f"{src_fmt}->{dst_fmt} done")
+
+
+# Register every ordered image pair, plus same-format for transparent formats
+# (background removal). Keys are lowercase to match CLI suffix parsing.
+for _src in _FORMATS:
+    for _dst in _FORMATS:
+        if _src != _dst:
+            register(_src, _dst)(convert_image)
+for _fmt in ("png", "webp"):
+    register(_fmt, _fmt)(convert_image)

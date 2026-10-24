@@ -1,26 +1,33 @@
+"""Converter registry mapping (src, dst) -> converter function."""
+
 from collections.abc import Callable
+from types import SimpleNamespace
+
+_REGISTRY: dict[tuple[str, str], Callable] = {}
 
 
-class _Registry:
-    def __init__(self):
-        self._d = {}
+def register(src: str, dst: str):
+    """Decorator factory registering *fn* for the (src, dst) pair."""
 
-    def register(self, src: str, dst: str):
-        def deco(fn: Callable):
-            self._d[(src, dst)] = fn
-            return fn
+    def deco(fn: Callable):
+        _REGISTRY[(src, dst)] = fn
+        return fn
 
-        return deco
-
-    def list_pairs(self):
-        return list(self._d.keys())
-
-    def get(self, src, dst):
-        return self._d.get((src, dst))
+    return deco
 
 
-registry = _Registry()
+def list_pairs():
+    return list(_REGISTRY.keys())
 
 
-def register(src, dst):
-    return registry.register(src, dst)
+def get(src, dst):
+    return _REGISTRY.get((src, dst))
+
+
+# Backward-compatible namespace (cli and tests use registry.register/get/list_pairs/_d).
+registry = SimpleNamespace(
+    register=register,
+    list_pairs=list_pairs,
+    get=get,
+    _d=_REGISTRY,
+)

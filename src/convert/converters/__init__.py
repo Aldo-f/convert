@@ -1,32 +1,10 @@
 # Import all converters to register them
-from . import (
-    docx_to_md,  # noqa: F401
-    docx_to_txt,  # noqa: F401
-    gif_to_jpeg,  # noqa: F401
-    gif_to_jpg,  # noqa: F401
-    gif_to_png,  # noqa: F401
-    gif_to_webp,  # noqa: F401
-    img_to_img,  # noqa: F401
-    jpeg_to_gif,  # noqa: F401
-    jpeg_to_jpg,  # noqa: F401
-    jpeg_to_png,  # noqa: F401
-    jpeg_to_webp,  # noqa: F401
-    jpg_to_gif,  # noqa: F401
-    jpg_to_jpeg,  # noqa: F401
-    jpg_to_png,  # noqa: F401
-    jpg_to_webp,  # noqa: F401
-    md_to_docx,  # noqa: F401
-    md_to_txt,  # noqa: F401
-    png_to_gif,  # noqa: F401
-    png_to_jpeg,  # noqa: F401
-    png_to_jpg,  # noqa: F401
-    png_to_png,  # noqa: F401
-    png_to_webp,  # noqa: F401
-    txt_to_docx,  # noqa: F401
-    txt_to_md,  # noqa: F401
-    webp_to_gif,  # noqa: F401
-    webp_to_jpeg,  # noqa: F401
-    webp_to_jpg,  # noqa: F401
-    webp_to_png,  # noqa: F401
-    webp_to_webp,  # noqa: F401
+from . import (  # noqa: F401
+    docx_to_md,
+    docx_to_txt,
+    img_to_img,
+    md_to_docx,
+    md_to_txt,
+    txt_to_docx,
+    txt_to_md,
 )
