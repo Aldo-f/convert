@@ -126,6 +126,23 @@ python -m convert.cli check-specs
 - **Models**: `src/convert/models.py` - `ConversionRequest` and `ConversionResult` dataclasses
 - **Converters**: `src/convert/converters/` - One file per source→target pair
 
+### Adding an ffmpeg-based converter
+
+When many formats share one tool (e.g. audio: mp3/wav/ogg/flac/aac/m4a; video: mp4/webm/mkv/avi/mov),
+use a **single shared implementation module** instead of one thin file per pair. Pattern:
+
+1. Define a format tuple + a codec map (`_FORMATS`, `_CODEC`/`_VIDEO_CODEC`/`_AUDIO_CODEC`).
+2. Implement the conversion by invoking the system `ffmpeg` binary (located via `shutil.which`)
+   through `subprocess.run`, mapping stderr to a `ValueError` on failure.
+3. Register every ordered pair (+ same-format) with a single loop after the function definition.
+4. Add a `spec.md` in a `spec.md`-named subdirectory (e.g. `audio_to_audio/spec.md`).
+
+`check-specs` recognizes shared modules: when the per-pair module (`png_to_jpg`) is absent it falls
+back to the shared spec (`audio_to_audio/spec.md`, `video_to_video/spec.md`, or the image shared
+`spec.md`) for that format family. Tests generate 1-second source clips with `ffmpeg -f lavfi`
+and assert on `ffprobe` codec output. See `converters/audio_to_audio.py` and `converters/video_to_video.py`
+as live templates.
+
 ## License
 
 MIT
