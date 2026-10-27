@@ -156,6 +156,7 @@ def _convert_docx_to_md(req: ConversionRequest) -> ConversionResult:
 def _strip_markdown(content: str) -> str:
     """Minimal Markdown stripping for DOCX conversion."""
     import re
+
     lines = content.splitlines()
     out_lines = []
     in_code_fence = False

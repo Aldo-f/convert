@@ -69,7 +69,8 @@ class ConvertHandler(BaseHTTPRequestHandler):
         target = data.get("target")
 
         missing = [
-            name for name, value in (("source", source), ("format", fmt), ("target", target))
+            name
+            for name, value in (("source", source), ("format", fmt), ("target", target))
             if not value
         ]
         if missing:

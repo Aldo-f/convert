@@ -5,6 +5,8 @@ from click.testing import CliRunner
 from convert.cli import cli
 
 _AUDIO_FORMATS = ("mp3", "wav", "ogg", "flac", "aac", "m4a")
+
+
 def _make_audio(tmp_path, name, fmt="wav"):
     """Generate a 1-second sine-wave audio file via ffmpeg."""
     src = tmp_path / name

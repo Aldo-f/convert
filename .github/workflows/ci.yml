@@ -67,9 +67,9 @@ jobs:
           python - <<'PY'
           from importlib.resources import files
           for rel in [
-              "converters/md_to_docx/spec.md",
-              "converters/md_to_txt/spec.md",
-              "converters/txt_to_md/spec.md",
+              "converters/text_to_text/spec.md",
+              "converters/audio_to_audio/spec.md",
+              "converters/video_to_video/spec.md",
           ]:
               assert files("convert").joinpath(rel).is_file(), f"missing package data: {rel}"
           print("package data present")
