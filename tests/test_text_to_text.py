@@ -1,8 +1,5 @@
 """Tests for text-to-text conversion (shared text_to_text module)."""
 
-import os
-from pathlib import Path
-
 from click.testing import CliRunner
 
 from convert.cli import cli

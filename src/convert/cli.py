@@ -16,9 +16,11 @@ def _check_specs():
     image_spec = converters_dir / "spec.md"
     audio_spec = converters_dir / "audio_to_audio" / "spec.md"
     video_spec = converters_dir / "video_to_video" / "spec.md"
+    text_spec = converters_dir / "text_to_text" / "spec.md"
     _IMAGE_FORMATS = {"png", "jpg", "jpeg", "webp", "gif"}
     _AUDIO_FORMATS = {"mp3", "wav", "ogg", "flac", "aac", "m4a"}
     _VIDEO_FORMATS = {"mp4", "webm", "mkv", "avi", "mov"}
+    _TEXT_FORMATS = {"txt", "md", "docx"}
 
     def shared_spec_for(src, dst):
         if src in _IMAGE_FORMATS and dst in _IMAGE_FORMATS:
@@ -27,6 +29,8 @@ def _check_specs():
             return audio_spec
         if src in _VIDEO_FORMATS and dst in _VIDEO_FORMATS:
             return video_spec
+        if src in _TEXT_FORMATS and dst in _TEXT_FORMATS:
+            return text_spec
         return None
 
     for src, dst in registry.list_pairs():

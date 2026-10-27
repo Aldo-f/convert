@@ -1,0 +1,17 @@
+{
+  "name": "convert-cli-node",
+  "version": "0.1.0",
+  "description": "Thin Node.js wrapper for the convert Python CLI",
+  "bin": {
+    "convert-cli-node": "cli.js"
+  },
+  "scripts": {
+    "test": "node test/test-wrapper.js",
+    "start": "node cli.js"
+  },
+  "keywords": ["convert", "cli", "wrapper", "conversion", "markdown", "docx", "audio", "video"],
+  "author": "Aldo-f",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

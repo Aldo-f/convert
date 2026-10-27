@@ -1,14 +1,29 @@
 # convert
 
+[![CI](https://github.com/Aldo-f/convert/actions/workflows/ci.yml/badge.svg)](https://github.com/Aldo-f/convert/actions)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Universal type-x to type-y converter. Lightweight, modular CLI tool for converting between document formats.
 
 ## Install
 
+### Quick Start
+
 ```bash
-pip install -e .
+pip install convert-cli
+convert --help
 ```
 
 Requires Python 3.12+.
+
+### Development Install
+
+```bash
+git clone https://github.com/Aldo-f/convert.git
+cd convert
+pip install -e .
+```
 
 > **Note on the `convert` command name:** ImageMagick also provides `/usr/bin/convert`, which takes precedence on most `PATH`s. To use this project's CLI, run the full path or adjust `PATH`:
 > ```bash
@@ -53,6 +68,56 @@ convert convert --help
 | Video → Video (mp4/webm/mkv/avi/mov, any pair) | `convert in.mp4 out.webm` |
 | Image → Image (png/jpg/jpeg/webp/gif, any pair) | `convert in.png out.jpg` |
 | PNG/WEBP → same format (background removal) | `convert in.png out.png --remove-background` |
+
+## Examples
+
+### Markdown → Plaintext
+
+**Input (`notes.md`):**
+```markdown
+# Meeting Notes
+
+**Action items:**
+- Review PR #42
+- Update documentation
+
+> Due: Friday
+```
+
+**Command:**
+```bash
+convert notes.md notes.txt
+```
+
+**Output (`notes.txt`):**
+```
+Meeting Notes
+
+Action items:
+- Review PR #42
+- Update documentation
+
+Due: Friday
+```
+
+### Text → Markdown
+
+**Input (`todo.txt`):**
+```
+Buy groceries
+Walk the dog
+```
+
+**Command:**
+```bash
+convert todo.txt todo.md
+```
+
+**Output (`todo.md`):**
+```
+Buy groceries
+Walk the dog
+```
 
 ## Adding a New Converter
 
